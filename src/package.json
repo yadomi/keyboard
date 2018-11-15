@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "iohook": "^0.2.4",
+    "ramda": "^0.25.0"
+  }
+}
