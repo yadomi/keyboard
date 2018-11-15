@@ -1,0 +1,11 @@
+[Unit]
+Description=HID Keyboard Service
+After=systemd-modules-load.service
+ 
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/bin/keyboard
+ 
+[Install]
+WantedBy=sysinit.target
