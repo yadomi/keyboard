@@ -1,3 +1,3 @@
-# HID Keyboard
+# Pi Zero Macro Keyboard
 
-Pi Zero as HID Keyboard
+Pi Zero Keyboard
