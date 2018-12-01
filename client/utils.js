@@ -1,5 +1,6 @@
 const { Parser } = require('binary-parser')
 const { byName } = require('./constants')
+const { pick, reduce, compose, toPairs, append } = require('ramda')
 
 const modifiersByKey = {
   LeftControl: byName['LEFT_CONTROL'],
@@ -24,7 +25,17 @@ const Keyboard = new Parser()
   .skip(1)
   .array('Codes', { type: 'int8', length: 6 })
 
+const getModifiers = compose(
+  reduce(
+    (sum, [key, value]) => (value ? append(modifiersByKey[key], sum) : sum),
+    []
+  ),
+  toPairs,
+  pick(Object.keys(modifiersByKey))
+)
+
 module.exports = {
   modifiersByKey,
-  Keyboard
+  Keyboard,
+  getModifiers
 }
