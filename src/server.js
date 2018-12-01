@@ -1,16 +1,22 @@
-const iohook = require('iohook')
 const { byCode, byName } = require('./constants')
+const hid = require('node-hid')
+const dgram = require('dgram')
 
 const PORT = 33333
-const HOST = '127.0.0.1'
-
-const dgram = require('dgram')
+const HOST = '255.255.255.255'
 const client = dgram.createSocket('udp4')
 
-iohook.on('keydown', event => {
-  const message = byCode[event.keycode]
-  if (!message) return
-  client.send(message, 0, message.length, PORT, HOST)
+client.on('listening', function () {
+    const address = client.address();
+    console.log('UDP Client listening on ' + address.address + ":" + address.port);
+    client.setBroadcast(true);
+});
+
+const device = new hid.HID('/dev/hidraw0')
+device.on('data', data => {
+	client.send(data, 0, data.length, PORT, HOST, ((err, bytes) => {
+		if (err) console.log(err);
+	}));
 })
 
-iohook.start()
+client.bind(PORT)
