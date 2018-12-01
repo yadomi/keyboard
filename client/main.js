@@ -32,9 +32,12 @@ server.on('message', data => {
     if (!config.hasOwnProperty(key)) continue
 
     const match = config[key]
-    if (typeof match === 'string') console.log(match)
-
-    console.log(match)
+    if (typeof match === 'string') {
+      console.log('Run script', match)
+    } else {
+      console.log('Run plugin')
+      console.log(match)
+    }
   }
 })
 
