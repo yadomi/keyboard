@@ -7,20 +7,9 @@ const server = dgram.createSocket('udp4')
 const fs = require('fs')
 
 const { byCode } = require('./constants')
-const {
-  pick,
-  reduce,
-  compose,
-  toPairs,
-  append,
-  all,
-  contains,
-  __
-} = require('ramda')
+const { pick, reduce, compose, toPairs, append } = require('ramda')
 const { Keyboard, modifiersByKey } = require('./utils')
 const config = yaml.safeLoad(fs.readFileSync('./config/keyboard.yml', 'utf8'))
-
-console.log({ config })
 
 const modifiers = compose(
   reduce(
