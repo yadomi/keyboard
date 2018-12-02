@@ -1,0 +1,55 @@
+# KEY_1: C:\AHK\Sound_KEY1.ahk
+# KEY_C: C:\AHK\Run_Chrome.ahk
+
+# KEY_Q:
+#   target: obs
+#   command: SetCurrentScene
+#   args:
+#     scene-name: AFK
+
+# KEY_W:
+#   target: obs
+#   command: SetCurrentScene
+#   args:
+#     scene-name: Game
+
+# KEY_A:
+#   target: obs
+#   command: StartStopStreaming
+
+# SPACEBAR:
+#   target: shell
+#   command: exec
+#   args: 'msg "%username%" Hello World'
+
+# PAGE_UP:
+#   target: philipshue
+#   command: IncrementGroupBrightness
+#   args:
+#     id: 3
+#     step: 30
+
+# PAGE_DOWN:
+#   target: philipshue
+#   command: IncrementGroupBrightness
+#   args:
+#     id: 3
+#     step: -30
+
+# HOME:
+#   target: philipshue
+#   command: ToggleGroup
+#   args:
+#     id: 4
+
+# END:
+#   - target: philipshue
+#     command: SetGroupState
+#     args:
+#       name: <NAME_OF_GROUP>
+#       on: false
+#   - target: philipshue
+#     command: SetGroupState
+#     args:
+#       name: <NAME_OF_GROUP>
+#       on: false
