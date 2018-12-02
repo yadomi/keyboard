@@ -11,9 +11,9 @@ const { Keyboard, modifiersByKey, getModifiers } = require('./utils')
 const { exec } = require('child_process')
 const Targets = require('./targets')
 
-console.log(Targets)
+console.log('Registred targets: ', Object.keys(Targets).join(', '))
 
-const config = yaml.safeLoad(fs.readFileSync('./config/keyboard.yml', 'utf8'))
+const keyboard = yaml.safeLoad(fs.readFileSync('./config/keyboard.yml', 'utf8'))
 
 server.on('message', data => {
   const message = Keyboard.parse(data)
@@ -22,24 +22,36 @@ server.on('message', data => {
     .filter(Boolean)
 
   if (input.length <= 0) return
-  console.log(input)
+  console.log('INPUT', input)
 
-  for (const key of input) {
-    if (!config.hasOwnProperty(key)) continue
-    const match = config[key]
+  try {
+    for (const key of input) {
+      if (!keyboard.hasOwnProperty(key)) continue
+      const match = keyboard[key]
 
-    if (typeof match === 'string') {
-      console.log('RUN: ', match)
-      exec(match, err => {
-        if (err) console.error(err)
-      })
-    } else {
-      console.log('RUN', match.target)
-      if (!Targets.hasOwnProperty(match.target)) continue
+      if (typeof match === 'string') {
+        console.log('RUN: ', match)
+        exec(match, err => {
+          if (err) console.error(err)
+        })
+      } else {
+        const matches = Array.isArray(match) ? match : [match]
+        for (const entry of matches) {
+          if (!Targets.hasOwnProperty(entry.target)) {
+            // prettier-ignore
+            console.error(`Warning: Target ${entry.target} was not registered or does not exists`)
+            continue
+          }
 
-      Targets[match.target](match.command, match.args)
+          console.log('RUN', entry.target, entry.command)
+          Targets[entry.target](entry.command, entry.args)
+        }
+      }
     }
+  } catch (err) {
+    console.error('Main:', err)
   }
 })
 
 server.bind(PORT, HOST)
+console.log('Ready, listening for keystroke...')

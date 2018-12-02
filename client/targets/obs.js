@@ -1,8 +1,11 @@
 const OBSWebSocket = require('obs-websocket-js')
 
-const obs = new OBSWebSocket()
-obs.connect({ address: 'localhost:4444', password: 'twitchprime' })
+module.exports = (config, register) => {
+  const obs = new OBSWebSocket()
+  obs
+    .connect({ address: config.address, password: config.password })
+    .then(() => console.error(`[${config.name}]`, 'Connected'))
+    .catch(err => console.error(`[${config.name}]`, err.message))
 
-module.exports = function(command, args) {
-  obs.send(command, args)
+  register((...args) => obs.send(...args))
 }
